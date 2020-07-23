@@ -1,0 +1,1075 @@
+Started GET "/" for ::1 at 2020-07-23 20:03:59 +0530
+  [1m[35m (4.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+
+ActiveRecord::PendingMigrationError - Migrations are pending. To resolve this issue, run:
+
+        rails db:migrate RAILS_ENV=development
+
+:
+
+Started POST "/__better_errors/9473a64daaed6fa7/variables" for ::1 at 2020-07-23 20:03:59 +0530
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (2.3ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (2.4ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateStructure (20200723094223)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "expenses"[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "expenses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" text, "amount" float, "createdAt" date, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "User_id" integer NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_expenses_on_User_id" ON "expenses" ("User_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "group_expenses"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "group_expenses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "Group_id" integer NOT NULL, "Expense_id" integer NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_group_expenses_on_Expense_id" ON "group_expenses" ("Expense_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_group_expenses_on_Group_id" ON "group_expenses" ("Group_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "groups"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "groups" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "icon" text, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "user_id" integer)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE  INDEX "index_groups_on_user_id" ON "groups" ("user_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "users"[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar DEFAULT '' NOT NULL, "userimage" text, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "email" varchar DEFAULT '' NOT NULL, "encrypted_password" varchar DEFAULT '' NOT NULL, "reset_password_token" varchar, "reset_password_sent_at" datetime, "remember_created_at" datetime)[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_reset_password_token" ON "users" ("reset_password_token")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_username" ON "users" ("username")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aexpenses" ("id" integer NOT NULL PRIMARY KEY, "name" text DEFAULT NULL, "amount" float DEFAULT NULL, "createdAt" date DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "User_id" integer NOT NULL)[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE  INDEX "tindex_aexpenses_on_User_id" ON "aexpenses" ("User_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "aexpenses" ("id","name","amount","createdAt","created_at","updated_at","User_id")
+                     SELECT "id","name","amount","createdAt","created_at","updated_at","User_id" FROM "expenses"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "expenses"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "expenses" ("id" integer NOT NULL PRIMARY KEY, "name" text DEFAULT NULL, "amount" float DEFAULT NULL, "createdAt" date DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "User_id" integer NOT NULL, CONSTRAINT "fk_rails_e1b182568b"
+FOREIGN KEY ("User_id")
+  REFERENCES "Users" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_expenses_on_User_id" ON "expenses" ("User_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "expenses" ("id","name","amount","createdAt","created_at","updated_at","User_id")
+                     SELECT "id","name","amount","createdAt","created_at","updated_at","User_id" FROM "aexpenses"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aexpenses"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TEMPORARY TABLE "agroup_expenses" ("id" integer NOT NULL PRIMARY KEY, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "Group_id" integer NOT NULL, "Expense_id" integer NOT NULL)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE  INDEX "tindex_agroup_expenses_on_Group_id" ON "agroup_expenses" ("Group_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "tindex_agroup_expenses_on_Expense_id" ON "agroup_expenses" ("Expense_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "agroup_expenses" ("id","created_at","updated_at","Group_id","Expense_id")
+                     SELECT "id","created_at","updated_at","Group_id","Expense_id" FROM "group_expenses"[0m
+  [1m[35m (0.3ms)[0m  [1m[35mDROP TABLE "group_expenses"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "group_expenses" ("id" integer NOT NULL PRIMARY KEY, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "Group_id" integer NOT NULL, "Expense_id" integer NOT NULL, CONSTRAINT "fk_rails_1621aa4994"
+FOREIGN KEY ("Expense_id")
+  REFERENCES "Expenses" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_group_expenses_on_Expense_id" ON "group_expenses" ("Expense_id")[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE  INDEX "index_group_expenses_on_Group_id" ON "group_expenses" ("Group_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "group_expenses" ("id","created_at","updated_at","Group_id","Expense_id")
+                     SELECT "id","created_at","updated_at","Group_id","Expense_id" FROM "agroup_expenses"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "agroup_expenses"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "agroup_expenses" ("id" integer NOT NULL PRIMARY KEY, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "Group_id" integer NOT NULL, "Expense_id" integer NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "tindex_agroup_expenses_on_Group_id" ON "agroup_expenses" ("Group_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "tindex_agroup_expenses_on_Expense_id" ON "agroup_expenses" ("Expense_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "agroup_expenses" ("id","created_at","updated_at","Group_id","Expense_id")
+                     SELECT "id","created_at","updated_at","Group_id","Expense_id" FROM "group_expenses"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "group_expenses"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "group_expenses" ("id" integer NOT NULL PRIMARY KEY, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "Group_id" integer NOT NULL, "Expense_id" integer NOT NULL, CONSTRAINT "fk_rails_1621aa4994"
+FOREIGN KEY ("Expense_id")
+  REFERENCES "Expenses" ("id")
+, CONSTRAINT "fk_rails_6c3bd9f65f"
+FOREIGN KEY ("Group_id")
+  REFERENCES "Groups" ("id")
+)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE  INDEX "index_group_expenses_on_Expense_id" ON "group_expenses" ("Expense_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_group_expenses_on_Group_id" ON "group_expenses" ("Group_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "group_expenses" ("id","created_at","updated_at","Group_id","Expense_id")
+                     SELECT "id","created_at","updated_at","Group_id","Expense_id" FROM "agroup_expenses"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "agroup_expenses"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TEMPORARY TABLE "agroups" ("id" integer NOT NULL PRIMARY KEY, "name" varchar DEFAULT NULL, "icon" text DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "user_id" integer DEFAULT NULL)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE  INDEX "tindex_agroups_on_user_id" ON "agroups" ("user_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "agroups" ("id","name","icon","created_at","updated_at","user_id")
+                     SELECT "id","name","icon","created_at","updated_at","user_id" FROM "groups"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "groups"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "groups" ("id" integer NOT NULL PRIMARY KEY, "name" varchar DEFAULT NULL, "icon" text DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "user_id" integer DEFAULT NULL, CONSTRAINT "fk_rails_5e78cd340a"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_groups_on_user_id" ON "groups" ("user_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "groups" ("id","name","icon","created_at","updated_at","user_id")
+                     SELECT "id","name","icon","created_at","updated_at","user_id" FROM "agroups"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "agroups"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mprimary::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20200723094223"]]
+  [1m[35m (3.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.4ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", "2020-07-23 14:34:34.738113"], ["updated_at", "2020-07-23 14:34:34.738113"]]
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/" for ::1 at 2020-07-23 20:04:57 +0530
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UsersController#index as HTML
+Completed 401 Unauthorized in 15ms (ActiveRecord: 0.0ms | Allocations: 1568)
+
+
+Started GET "/login" for ::1 at 2020-07-23 20:04:57 +0530
+Processing by Devise::SessionsController#new as HTML
+  Rendering devise/sessions/new.html.erb within layouts/application
+  Rendered devise/shared/_links.html.erb (Duration: 1.4ms | Allocations: 597)
+  Rendered devise/sessions/new.html.erb within layouts/application (Duration: 25.6ms | Allocations: 3545)
+[Webpacker] Compiling...
+Started GET "/" for ::1 at 2020-07-23 20:05:05 +0530
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+Processing by UsersController#index as HTML
+Completed 401 Unauthorized in 2ms (ActiveRecord: 0.0ms | Allocations: 281)
+
+
+Started GET "/login" for ::1 at 2020-07-23 20:05:05 +0530
+Processing by Devise::SessionsController#new as HTML
+  Rendering devise/sessions/new.html.erb within layouts/application
+  Rendered devise/shared/_links.html.erb (Duration: 0.7ms | Allocations: 131)
+  Rendered devise/sessions/new.html.erb within layouts/application (Duration: 4.4ms | Allocations: 1051)
+[Webpacker] Compiling...
+[Webpacker] Compiled all packs in /Users/poojamore/rails/ExpenseManagement/public/packs
+[Webpacker] Hash: 228efec5e5e45fc8144c
+Version: webpack 4.43.0
+Time: 6792ms
+Built at: 23/07/2020 20:05:09
+                                     Asset       Size       Chunks                         Chunk Names
+    js/application-2c749a69cae7cacc9ef1.js    656 KiB  application  [emitted] [immutable]  application
+js/application-2c749a69cae7cacc9ef1.js.map    768 KiB  application  [emitted] [dev]        application
+                             manifest.json  364 bytes               [emitted]              
+Entrypoint application = js/application-2c749a69cae7cacc9ef1.js js/application-2c749a69cae7cacc9ef1.js.map
+[./app/javascript/channels sync recursive _channel\.js$] ./app/javascript/channels sync _channel\.js$ 160 bytes {application} [built]
+[./app/javascript/channels/index.js] 211 bytes {application} [built]
+[./app/javascript/packs/application.js] 770 bytes {application} [built]
+[./node_modules/webpack/buildin/global.js] (webpack)/buildin/global.js 905 bytes {application} [built]
+[./node_modules/webpack/buildin/module.js] (webpack)/buildin/module.js 552 bytes {application} [built]
+    + 6 hidden modules
+
+  Rendered shared/_application_nav.html.erb (Duration: 1.9ms | Allocations: 465)
+  Rendered shared/_alerts.html.erb (Duration: 0.5ms | Allocations: 128)
+  Rendered shared/_application_footer.html.erb (Duration: 0.4ms | Allocations: 105)
+Completed 200 OK in 12452ms (Views: 12432.4ms | ActiveRecord: 0.9ms | Allocations: 150676)
+
+
+[Webpacker] Compiled all packs in /Users/poojamore/rails/ExpenseManagement/public/packs
+[Webpacker] Hash: 228efec5e5e45fc8144c
+Version: webpack 4.43.0
+Time: 1784ms
+Built at: 23/07/2020 20:05:10
+                                     Asset       Size       Chunks                         Chunk Names
+    js/application-2c749a69cae7cacc9ef1.js    656 KiB  application  [emitted] [immutable]  application
+js/application-2c749a69cae7cacc9ef1.js.map    768 KiB  application  [emitted] [dev]        application
+                             manifest.json  364 bytes               [emitted]              
+Entrypoint application = js/application-2c749a69cae7cacc9ef1.js js/application-2c749a69cae7cacc9ef1.js.map
+[./app/javascript/channels sync recursive _channel\.js$] ./app/javascript/channels sync _channel\.js$ 160 bytes {application} [built]
+[./app/javascript/channels/index.js] 211 bytes {application} [built]
+[./app/javascript/packs/application.js] 770 bytes {application} [built]
+[./node_modules/webpack/buildin/global.js] (webpack)/buildin/global.js 905 bytes {application} [built]
+[./node_modules/webpack/buildin/module.js] (webpack)/buildin/module.js 552 bytes {application} [built]
+    + 6 hidden modules
+
+  Rendered shared/_application_nav.html.erb (Duration: 0.6ms | Allocations: 321)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 27)
+  Rendered shared/_application_footer.html.erb (Duration: 0.0ms | Allocations: 13)
+Completed 200 OK in 5011ms (Views: 5009.1ms | ActiveRecord: 0.0ms | Allocations: 16848)
+
+
+Started GET "/register" for ::1 at 2020-07-23 20:05:19 +0530
+Processing by Devise::RegistrationsController#new as HTML
+  Rendering devise/registrations/new.html.erb within layouts/application
+  Rendered devise/shared/_error_messages.html.erb (Duration: 0.5ms | Allocations: 199)
+  Rendered devise/shared/_links.html.erb (Duration: 0.6ms | Allocations: 120)
+  Rendered devise/registrations/new.html.erb within layouts/application (Duration: 13.3ms | Allocations: 2393)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 1.0ms | Allocations: 320)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+  Rendered shared/_application_footer.html.erb (Duration: 0.1ms | Allocations: 14)
+Completed 200 OK in 36ms (Views: 34.4ms | ActiveRecord: 0.0ms | Allocations: 12817)
+
+
+Started POST "/" for ::1 at 2020-07-23 20:05:32 +0530
+Processing by Devise::RegistrationsController#create as HTML
+  Parameters: {"authenticity_token"=>"qk/RtQbdTVdmCRelCcbh9PQkRm4ene2rx1mSQFVllYJEsqJKvGYhw90eG7Qg9aSsWJyqxw3luV6M3lPfqM1YVw==", "user"=>{"username"=>"test", "email"=>"test@test.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}, "commit"=>"Sign up"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "test@test.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = ? LIMIT ?[0m  [["username", "test"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO "users" ("username", "created_at", "updated_at", "email", "encrypted_password") VALUES (?, ?, ?, ?, ?)[0m  [["username", "test"], ["created_at", "2020-07-23 14:35:33.536609"], ["updated_at", "2020-07-23 14:35:33.536609"], ["email", "test@test.com"], ["encrypted_password", "$2a$12$jwUkSuakwCEO8r6p42ysLe//2pT/7j8wMuks7kFkxmgCgzij0PjHm"]]
+  [1m[35m (1.9ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/
+Completed 302 Found in 719ms (ActiveRecord: 3.0ms | Allocations: 13599)
+
+
+Started GET "/" for ::1 at 2020-07-23 20:05:33 +0530
+Processing by UsersController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering users/index.html.erb within layouts/application
+  Rendered users/index.html.erb within layouts/application (Duration: 1.0ms | Allocations: 318)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 1.0ms | Allocations: 217)
+  Rendered shared/_alerts.html.erb (Duration: 0.4ms | Allocations: 27)
+  Rendered shared/_application_footer.html.erb (Duration: 0.1ms | Allocations: 14)
+Completed 200 OK in 23ms (Views: 18.4ms | ActiveRecord: 0.2ms | Allocations: 11865)
+
+
+Started GET "/expenses" for ::1 at 2020-07-23 20:05:36 +0530
+Processing by ExpensesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "expenses"."amount" FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/models/expense.rb:8:in `block in <class:Expense>'
+  Rendering expenses/index.html.erb within layouts/group
+  Rendered shared/_total_expenses.html.erb (Duration: 14.5ms | Allocations: 1676)
+  [1m[36mExpense Load (0.3ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 2.7ms | Allocations: 917)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/expenses/index.html.erb:11
+  Rendered shared/_new_expenses.html.erb (Duration: 0.5ms | Allocations: 148)
+  Rendered expenses/index.html.erb within layouts/group (Duration: 28.8ms | Allocations: 4905)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 1.0ms | Allocations: 219)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+Completed 200 OK in 544ms (Views: 493.6ms | ActiveRecord: 1.3ms | Allocations: 51353)
+
+
+Started GET "/expenses" for ::1 at 2020-07-23 20:05:37 +0530
+Processing by ExpensesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "expenses"."amount" FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/models/expense.rb:8:in `block in <class:Expense>'
+  Rendering expenses/index.html.erb within layouts/group
+  Rendered shared/_total_expenses.html.erb (Duration: 0.4ms | Allocations: 105)
+  [1m[36mExpense Load (0.8ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 25.0ms | Allocations: 691)
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/expenses/index.html.erb:11
+  Rendered shared/_new_expenses.html.erb (Duration: 0.2ms | Allocations: 45)
+  Rendered expenses/index.html.erb within layouts/group (Duration: 31.7ms | Allocations: 1842)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.5ms | Allocations: 204)
+  Rendered shared/_alerts.html.erb (Duration: 0.2ms | Allocations: 23)
+Completed 200 OK in 73ms (Views: 60.2ms | ActiveRecord: 1.8ms | Allocations: 13554)
+
+
+Started GET "/extExpenses" for ::1 at 2020-07-23 20:05:37 +0530
+Processing by ExpensesController#external_expense as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "expenses"."id" FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/controllers/expenses_controller.rb:85:in `ids'
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "group_expenses"."Expense_id" FROM "group_expenses" WHERE 1=0[0m
+  ↳ app/models/expense.rb:11:in `block in <class:Expense>'
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "expenses"."amount" FROM "expenses" WHERE 1=1 AND "expenses"."User_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["User_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/models/expense.rb:8:in `block in <class:Expense>'
+  Rendering expenses/external_expense.html.erb within layouts/group
+  Rendered shared/_total_expenses.html.erb (Duration: 0.3ms | Allocations: 105)
+  [1m[36mExpense Load (0.3ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE 1=1 AND "expenses"."User_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["User_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 2.6ms | Allocations: 679)
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "expenses" WHERE 1=1 AND "expenses"."User_id" = ?[0m  [["User_id", 1]]
+  ↳ app/views/expenses/external_expense.html.erb:10
+  Rendered shared/_new_expenses.html.erb (Duration: 0.3ms | Allocations: 49)
+  Rendered expenses/external_expense.html.erb within layouts/group (Duration: 8.1ms | Allocations: 1995)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.8ms | Allocations: 215)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+Completed 200 OK in 45ms (Views: 28.5ms | ActiveRecord: 1.8ms | Allocations: 15775)
+
+
+Started GET "/groups" for ::1 at 2020-07-23 20:05:38 +0530
+Processing by GroupsController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering groups/index.html.erb within layouts/group
+  [1m[36mGroup Load (0.3ms)[0m  [1m[34mSELECT "groups".* FROM "groups" WHERE "groups"."user_id" = ? ORDER BY name asc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/groups/index.html.erb:7
+  Rendered collection of templates [0 times] (Duration: 0.0ms | Allocations: 3)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "groups" WHERE "groups"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/groups/index.html.erb:10
+  Rendered groups/index.html.erb within layouts/group (Duration: 5.1ms | Allocations: 1812)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 216)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+Completed 200 OK in 36ms (Views: 20.0ms | ActiveRecord: 1.2ms | Allocations: 16640)
+
+
+Started GET "/" for ::1 at 2020-07-23 20:05:39 +0530
+Processing by UsersController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering users/index.html.erb within layouts/application
+  Rendered users/index.html.erb within layouts/application (Duration: 0.5ms | Allocations: 131)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 214)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+  Rendered shared/_application_footer.html.erb (Duration: 0.1ms | Allocations: 14)
+Completed 200 OK in 19ms (Views: 16.0ms | ActiveRecord: 0.1ms | Allocations: 10791)
+
+
+Started GET "/" for ::1 at 2020-07-23 20:05:40 +0530
+Processing by UsersController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering users/index.html.erb within layouts/application
+  Rendered users/index.html.erb within layouts/application (Duration: 0.6ms | Allocations: 122)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 206)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 23)
+  Rendered shared/_application_footer.html.erb (Duration: 0.1ms | Allocations: 13)
+Completed 200 OK in 24ms (Views: 19.3ms | ActiveRecord: 0.2ms | Allocations: 10766)
+
+
+Started GET "/groups" for ::1 at 2020-07-23 20:05:41 +0530
+Processing by GroupsController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering groups/index.html.erb within layouts/group
+  [1m[36mGroup Load (0.4ms)[0m  [1m[34mSELECT "groups".* FROM "groups" WHERE "groups"."user_id" = ? ORDER BY name asc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/groups/index.html.erb:7
+  Rendered collection of templates [0 times] (Duration: 0.0ms | Allocations: 3)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "groups" WHERE "groups"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/groups/index.html.erb:10
+  Rendered groups/index.html.erb within layouts/group (Duration: 4.8ms | Allocations: 1635)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.7ms | Allocations: 205)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 23)
+Completed 200 OK in 29ms (Views: 23.2ms | ActiveRecord: 0.7ms | Allocations: 12445)
+
+
+Started GET "/groups" for ::1 at 2020-07-23 20:05:41 +0530
+Processing by GroupsController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering groups/index.html.erb within layouts/group
+  [1m[36mGroup Load (0.5ms)[0m  [1m[34mSELECT "groups".* FROM "groups" WHERE "groups"."user_id" = ? ORDER BY name asc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/groups/index.html.erb:7
+  Rendered collection of templates [0 times] (Duration: 0.0ms | Allocations: 3)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "groups" WHERE "groups"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/groups/index.html.erb:10
+  Rendered groups/index.html.erb within layouts/group (Duration: 6.4ms | Allocations: 1633)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 1.1ms | Allocations: 205)
+  Rendered shared/_alerts.html.erb (Duration: 0.2ms | Allocations: 23)
+Completed 200 OK in 35ms (Views: 28.6ms | ActiveRecord: 0.9ms | Allocations: 12445)
+
+
+Started GET "/groups/new" for ::1 at 2020-07-23 20:05:42 +0530
+Processing by GroupsController#new as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering groups/new.html.erb within layouts/group
+  Rendered groups/_form.html.erb (Duration: 2.2ms | Allocations: 829)
+  Rendered groups/new.html.erb within layouts/group (Duration: 4.2ms | Allocations: 1127)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 1.1ms | Allocations: 223)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+Completed 200 OK in 44ms (Views: 25.3ms | ActiveRecord: 1.0ms | Allocations: 14843)
+
+
+Started POST "/groups" for ::1 at 2020-07-23 20:05:47 +0530
+Processing by GroupsController#create as HTML
+  Parameters: {"authenticity_token"=>"D+wOaU0CPEKgowiPrGe2XsyYjfQ4eTEBYyrdcmf6xEi82RCT0vT/0yA78igRPg1pyKAroGI7jWdwrMUS7e1o4A==", "group"=>{"name"=>"fffecddd"}, "commit"=>"Save Group"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/groups_controller.rb:18:in `block in create'
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/groups_controller.rb:18:in `block in create'
+  [1m[36mGroup Create (0.6ms)[0m  [1m[32mINSERT INTO "groups" ("name", "created_at", "updated_at", "user_id") VALUES (?, ?, ?, ?)[0m  [["name", "fffecddd"], ["created_at", "2020-07-23 14:35:47.493175"], ["updated_at", "2020-07-23 14:35:47.493175"], ["user_id", 1]]
+  ↳ app/controllers/groups_controller.rb:18:in `block in create'
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/groups_controller.rb:18:in `block in create'
+Redirected to http://localhost:3000/groups
+Completed 302 Found in 35ms (ActiveRecord: 3.2ms | Allocations: 8074)
+
+
+Started GET "/groups" for ::1 at 2020-07-23 20:05:47 +0530
+Processing by GroupsController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering groups/index.html.erb within layouts/group
+  [1m[36mGroup Load (0.3ms)[0m  [1m[34mSELECT "groups".* FROM "groups" WHERE "groups"."user_id" = ? ORDER BY name asc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/groups/index.html.erb:7
+  Rendered collection of groups/_group.html.erb [1 times] (Duration: 3.1ms | Allocations: 466)
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "groups" WHERE "groups"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/groups/index.html.erb:10
+  Rendered groups/index.html.erb within layouts/group (Duration: 12.5ms | Allocations: 2305)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 216)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 27)
+Completed 200 OK in 55ms (Views: 46.9ms | ActiveRecord: 1.4ms | Allocations: 15299)
+
+
+Started GET "/groups/1" for ::1 at 2020-07-23 20:05:52 +0530
+Processing by GroupsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mGroup Load (0.2ms)[0m  [1m[34mSELECT "groups".* FROM "groups" WHERE "groups"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/groups_controller.rb:59:in `set_group_item'
+  [1m[36mCACHE Group Load (0.0ms)[0m  [1m[34mSELECT "groups".* FROM "groups" WHERE "groups"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/groups_controller.rb:47:in `show'
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "expenses"."id" FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/controllers/groups_controller.rb:63:in `ids'
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "group_expenses"."Expense_id" FROM "group_expenses" WHERE 1=0[0m
+  ↳ app/models/expense.rb:11:in `block in <class:Expense>'
+  Rendering groups/show.html.erb within layouts/group
+  [1m[36mExpense Load (0.3ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" INNER JOIN "group_expenses" ON "expenses"."id" = "group_expenses"."expense_id" WHERE "group_expenses"."group_id" = ? ORDER BY createdAt desc[0m  [["group_id", 1]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 8.1ms | Allocations: 1825)
+  [1m[36mExpense Load (0.2ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE 1=1 AND "expenses"."User_id" = ? ORDER BY createdAt desc[0m  [["User_id", 1]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 1.4ms | Allocations: 658)
+  Rendered groups/show.html.erb within layouts/group (Duration: 11.2ms | Allocations: 2928)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.5ms | Allocations: 213)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+Completed 200 OK in 64ms (Views: 34.2ms | ActiveRecord: 1.8ms | Allocations: 21604)
+
+
+Started GET "/expenses" for ::1 at 2020-07-23 20:05:54 +0530
+Processing by ExpensesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "expenses"."amount" FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/models/expense.rb:8:in `block in <class:Expense>'
+  Rendering expenses/index.html.erb within layouts/group
+  Rendered shared/_total_expenses.html.erb (Duration: 0.4ms | Allocations: 105)
+  [1m[36mExpense Load (0.3ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 1.6ms | Allocations: 691)
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/expenses/index.html.erb:11
+  Rendered shared/_new_expenses.html.erb (Duration: 0.2ms | Allocations: 49)
+  Rendered expenses/index.html.erb within layouts/group (Duration: 28.8ms | Allocations: 1845)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.6ms | Allocations: 215)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+Completed 200 OK in 53ms (Views: 45.3ms | ActiveRecord: 1.0ms | Allocations: 13286)
+
+
+Started GET "/expenses/new" for ::1 at 2020-07-23 20:05:55 +0530
+Processing by ExpensesController#new as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering expenses/new.html.erb within layouts/group
+  Rendered expenses/_form.html.erb (Duration: 5.0ms | Allocations: 1398)
+  Rendered expenses/new.html.erb within layouts/group (Duration: 6.3ms | Allocations: 1686)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 222)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+Completed 200 OK in 32ms (Views: 20.4ms | ActiveRecord: 0.2ms | Allocations: 15833)
+
+
+Started POST "/expenses" for ::1 at 2020-07-23 20:06:19 +0530
+Processing by ExpensesController#create as HTML
+  Parameters: {"authenticity_token"=>"KdC18tbTNy2ZqzU8krWddDnTk3N4mVhrWlS5/3Ke74rp3mQLRZbPojPibTWxNXESpn8m6POi1B8jiQ6FUEM1Hg==", "expense"=>{"name"=>"First", "amount"=>"20", "createdAt"=>"2020-11-27"}, "commit"=>"Save Group"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/expenses_controller.rb:24:in `block in create'
+  [1m[36mExpense Create (0.5ms)[0m  [1m[32mINSERT INTO "expenses" ("name", "amount", "createdAt", "created_at", "updated_at", "User_id") VALUES (?, ?, ?, ?, ?, ?)[0m  [["name", "First"], ["amount", 20.0], ["createdAt", "2020-11-27"], ["created_at", "2020-07-23 14:36:19.373820"], ["updated_at", "2020-07-23 14:36:19.373820"], ["User_id", 1]]
+  ↳ app/controllers/expenses_controller.rb:24:in `block in create'
+  [1m[35m (2.1ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/expenses_controller.rb:24:in `block in create'
+Redirected to http://localhost:3000/expenses
+Completed 302 Found in 12ms (ActiveRecord: 2.8ms | Allocations: 4393)
+
+
+Started GET "/expenses" for ::1 at 2020-07-23 20:06:19 +0530
+Processing by ExpensesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "expenses"."amount" FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/models/expense.rb:8:in `block in <class:Expense>'
+  Rendering expenses/index.html.erb within layouts/group
+  Rendered shared/_total_expenses.html.erb (Duration: 0.4ms | Allocations: 102)
+  [1m[36mExpense Load (0.3ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 2.7ms | Allocations: 1002)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/expenses/index.html.erb:11
+  Rendered shared/_new_expenses.html.erb (Duration: 0.1ms | Allocations: 35)
+  Rendered expenses/index.html.erb within layouts/group (Duration: 5.8ms | Allocations: 2139)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 204)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+Completed 200 OK in 28ms (Views: 21.9ms | ActiveRecord: 1.0ms | Allocations: 13587)
+
+
+Started GET "/groups" for ::1 at 2020-07-23 20:06:21 +0530
+Processing by GroupsController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering groups/index.html.erb within layouts/group
+  [1m[36mGroup Load (0.3ms)[0m  [1m[34mSELECT "groups".* FROM "groups" WHERE "groups"."user_id" = ? ORDER BY name asc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/groups/index.html.erb:7
+  Rendered collection of groups/_group.html.erb [1 times] (Duration: 0.8ms | Allocations: 250)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "groups" WHERE "groups"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/groups/index.html.erb:10
+  Rendered groups/index.html.erb within layouts/group (Duration: 5.2ms | Allocations: 1925)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 216)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+Completed 200 OK in 23ms (Views: 18.3ms | ActiveRecord: 0.7ms | Allocations: 12748)
+
+
+Started GET "/groups/1" for ::1 at 2020-07-23 20:06:23 +0530
+Processing by GroupsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mGroup Load (0.2ms)[0m  [1m[34mSELECT "groups".* FROM "groups" WHERE "groups"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/groups_controller.rb:59:in `set_group_item'
+  [1m[36mCACHE Group Load (0.0ms)[0m  [1m[34mSELECT "groups".* FROM "groups" WHERE "groups"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/groups_controller.rb:47:in `show'
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "expenses"."id" FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/controllers/groups_controller.rb:63:in `ids'
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "group_expenses"."Expense_id" FROM "group_expenses" WHERE "group_expenses"."Expense_id" = ?[0m  [["Expense_id", 1]]
+  ↳ app/models/expense.rb:11:in `block in <class:Expense>'
+  Rendering groups/show.html.erb within layouts/group
+  [1m[36mExpense Load (0.3ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" INNER JOIN "group_expenses" ON "expenses"."id" = "group_expenses"."expense_id" WHERE "group_expenses"."group_id" = ? ORDER BY createdAt desc[0m  [["group_id", 1]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 1.6ms | Allocations: 678)
+  [1m[36mExpense Load (0.2ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE 1=1 AND "expenses"."User_id" = ? ORDER BY createdAt desc[0m  [["User_id", 1]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 3.2ms | Allocations: 1122)
+  Rendered groups/show.html.erb within layouts/group (Duration: 11.2ms | Allocations: 2026)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.7ms | Allocations: 203)
+  Rendered shared/_alerts.html.erb (Duration: 0.3ms | Allocations: 23)
+Completed 200 OK in 51ms (Views: 38.3ms | ActiveRecord: 1.2ms | Allocations: 15374)
+
+
+Started POST "/group_expenses?Expense_id=1&Group_id=1" for ::1 at 2020-07-23 20:06:24 +0530
+Processing by GroupExpensesController#create as HTML
+  Parameters: {"authenticity_token"=>"0v6lWrMyZ8cR07h+Pbm5h/myCYNZL/+4iXIF204eqc3MxS22PQ1F3Qw8QSAysNBuHLk+JIZ1MmxTIXlCwSY2UA==", "Expense_id"=>"1", "Group_id"=>"1"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mGroup Load (0.1ms)[0m  [1m[34mSELECT "groups".* FROM "groups" WHERE "groups"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/group_expenses_controller.rb:21:in `set_group_item'
+  [1m[36mExpense Load (0.2ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE "expenses"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/group_expenses_controller.rb:25:in `set_expense_item'
+Redirected to http://localhost:3000/groups/1
+Completed 302 Found in 16ms (ActiveRecord: 0.9ms | Allocations: 8370)
+
+
+Started GET "/groups/1" for ::1 at 2020-07-23 20:06:24 +0530
+Processing by GroupsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mGroup Load (0.2ms)[0m  [1m[34mSELECT "groups".* FROM "groups" WHERE "groups"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/groups_controller.rb:59:in `set_group_item'
+  [1m[36mCACHE Group Load (0.0ms)[0m  [1m[34mSELECT "groups".* FROM "groups" WHERE "groups"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/groups_controller.rb:47:in `show'
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "expenses"."id" FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/controllers/groups_controller.rb:63:in `ids'
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "group_expenses"."Expense_id" FROM "group_expenses" WHERE "group_expenses"."Expense_id" = ?[0m  [["Expense_id", 1]]
+  ↳ app/models/expense.rb:11:in `block in <class:Expense>'
+  Rendering groups/show.html.erb within layouts/group
+  [1m[36mExpense Load (0.4ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" INNER JOIN "group_expenses" ON "expenses"."id" = "group_expenses"."expense_id" WHERE "group_expenses"."group_id" = ? ORDER BY createdAt desc[0m  [["group_id", 1]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 2.8ms | Allocations: 678)
+  [1m[36mExpense Load (0.3ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE 1=1 AND "expenses"."User_id" = ? ORDER BY createdAt desc[0m  [["User_id", 1]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 4.4ms | Allocations: 1114)
+  Rendered groups/show.html.erb within layouts/group (Duration: 10.0ms | Allocations: 2018)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 203)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+Completed 200 OK in 42ms (Views: 26.4ms | ActiveRecord: 1.5ms | Allocations: 15384)
+
+
+Started GET "/groups/1/edit" for ::1 at 2020-07-23 20:06:30 +0530
+Processing by GroupsController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mGroup Load (0.2ms)[0m  [1m[34mSELECT "groups".* FROM "groups" WHERE "groups"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/groups_controller.rb:59:in `set_group_item'
+  Rendering groups/edit.html.erb within layouts/group
+  Rendered groups/_form.html.erb (Duration: 1.5ms | Allocations: 531)
+  Rendered groups/edit.html.erb within layouts/group (Duration: 2.1ms | Allocations: 684)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 223)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+Completed 200 OK in 25ms (Views: 17.4ms | ActiveRecord: 0.5ms | Allocations: 11922)
+
+
+Started GET "/groups" for ::1 at 2020-07-23 20:06:31 +0530
+Processing by GroupsController#index as HTML
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering groups/index.html.erb within layouts/group
+  [1m[36mGroup Load (0.4ms)[0m  [1m[34mSELECT "groups".* FROM "groups" WHERE "groups"."user_id" = ? ORDER BY name asc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/groups/index.html.erb:7
+  Rendered collection of groups/_group.html.erb [1 times] (Duration: 0.6ms | Allocations: 241)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "groups" WHERE "groups"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/groups/index.html.erb:10
+  Rendered groups/index.html.erb within layouts/group (Duration: 5.6ms | Allocations: 1916)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 205)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 23)
+Completed 200 OK in 28ms (Views: 22.1ms | ActiveRecord: 1.6ms | Allocations: 12743)
+
+
+Started GET "/extExpenses" for ::1 at 2020-07-23 20:06:32 +0530
+Processing by ExpensesController#external_expense as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "expenses"."id" FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/controllers/expenses_controller.rb:85:in `ids'
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "group_expenses"."Expense_id" FROM "group_expenses" WHERE "group_expenses"."Expense_id" = ?[0m  [["Expense_id", 1]]
+  ↳ app/models/expense.rb:11:in `block in <class:Expense>'
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "expenses"."amount" FROM "expenses" WHERE 1=1 AND "expenses"."User_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["User_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/models/expense.rb:8:in `block in <class:Expense>'
+  Rendering expenses/external_expense.html.erb within layouts/group
+  Rendered shared/_total_expenses.html.erb (Duration: 0.4ms | Allocations: 102)
+  [1m[36mExpense Load (0.4ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE 1=1 AND "expenses"."User_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["User_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 2.9ms | Allocations: 982)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "expenses" WHERE 1=1 AND "expenses"."User_id" = ?[0m  [["User_id", 1]]
+  ↳ app/views/expenses/external_expense.html.erb:10
+  Rendered shared/_new_expenses.html.erb (Duration: 0.1ms | Allocations: 35)
+  Rendered expenses/external_expense.html.erb within layouts/group (Duration: 6.2ms | Allocations: 2118)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.3ms | Allocations: 215)
+  Rendered shared/_alerts.html.erb (Duration: 0.2ms | Allocations: 25)
+Completed 200 OK in 30ms (Views: 21.0ms | ActiveRecord: 1.4ms | Allocations: 14835)
+
+
+Started GET "/expenses" for ::1 at 2020-07-23 20:06:33 +0530
+Processing by ExpensesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "expenses"."amount" FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/models/expense.rb:8:in `block in <class:Expense>'
+  Rendering expenses/index.html.erb within layouts/group
+  Rendered shared/_total_expenses.html.erb (Duration: 0.4ms | Allocations: 102)
+  [1m[36mExpense Load (0.3ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 3.5ms | Allocations: 983)
+  [1m[35m (1.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/expenses/index.html.erb:11
+  Rendered shared/_new_expenses.html.erb (Duration: 0.1ms | Allocations: 34)
+  Rendered expenses/index.html.erb within layouts/group (Duration: 8.8ms | Allocations: 2118)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.3ms | Allocations: 204)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 23)
+Completed 200 OK in 32ms (Views: 22.9ms | ActiveRecord: 2.3ms | Allocations: 13524)
+
+
+Started GET "/" for ::1 at 2020-07-23 20:06:33 +0530
+Processing by UsersController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering users/index.html.erb within layouts/application
+  Rendered users/index.html.erb within layouts/application (Duration: 0.4ms | Allocations: 131)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.5ms | Allocations: 214)
+  Rendered shared/_alerts.html.erb (Duration: 0.2ms | Allocations: 25)
+  Rendered shared/_application_footer.html.erb (Duration: 0.1ms | Allocations: 15)
+Completed 200 OK in 27ms (Views: 23.8ms | ActiveRecord: 0.2ms | Allocations: 10803)
+
+
+Started GET "/" for ::1 at 2020-07-23 20:06:33 +0530
+Processing by UsersController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering users/index.html.erb within layouts/application
+  Rendered users/index.html.erb within layouts/application (Duration: 0.4ms | Allocations: 122)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 206)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 23)
+  Rendered shared/_application_footer.html.erb (Duration: 0.1ms | Allocations: 14)
+Completed 200 OK in 23ms (Views: 19.4ms | ActiveRecord: 0.2ms | Allocations: 10780)
+
+
+Started GET "/" for ::1 at 2020-07-23 20:06:51 +0530
+Processing by UsersController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering users/index.html.erb within layouts/application
+  Rendered users/index.html.erb within layouts/application (Duration: 0.5ms | Allocations: 122)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.3ms | Allocations: 206)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 23)
+  Rendered shared/_application_footer.html.erb (Duration: 0.1ms | Allocations: 13)
+Completed 200 OK in 21ms (Views: 17.9ms | ActiveRecord: 0.1ms | Allocations: 10764)
+
+
+Started GET "/groups" for ::1 at 2020-07-23 20:06:53 +0530
+Processing by GroupsController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering groups/index.html.erb within layouts/group
+  [1m[36mGroup Load (0.3ms)[0m  [1m[34mSELECT "groups".* FROM "groups" WHERE "groups"."user_id" = ? ORDER BY name asc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/groups/index.html.erb:7
+  Rendered collection of groups/_group.html.erb [1 times] (Duration: 0.7ms | Allocations: 238)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "groups" WHERE "groups"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/groups/index.html.erb:10
+  Rendered groups/index.html.erb within layouts/group (Duration: 5.4ms | Allocations: 1913)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 205)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 23)
+Completed 200 OK in 24ms (Views: 18.6ms | ActiveRecord: 0.8ms | Allocations: 12741)
+
+
+Started GET "/groups" for ::1 at 2020-07-23 20:06:53 +0530
+Processing by GroupsController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering groups/index.html.erb within layouts/group
+  [1m[36mGroup Load (0.3ms)[0m  [1m[34mSELECT "groups".* FROM "groups" WHERE "groups"."user_id" = ? ORDER BY name asc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/groups/index.html.erb:7
+  Rendered collection of groups/_group.html.erb [1 times] (Duration: 1.0ms | Allocations: 238)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "groups" WHERE "groups"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/groups/index.html.erb:10
+  Rendered groups/index.html.erb within layouts/group (Duration: 5.5ms | Allocations: 1912)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 1.0ms | Allocations: 205)
+  Rendered shared/_alerts.html.erb (Duration: 0.3ms | Allocations: 23)
+Completed 200 OK in 33ms (Views: 28.2ms | ActiveRecord: 0.7ms | Allocations: 12785)
+
+
+Started GET "/edit.1" for ::1 at 2020-07-23 20:06:53 +0530
+Processing by Devise::RegistrationsController#edit as 
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering devise/registrations/edit.html.erb within layouts/application
+  Rendered devise/shared/_error_messages.html.erb (Duration: 0.1ms | Allocations: 15)
+  Rendered devise/registrations/edit.html.erb within layouts/application (Duration: 4.4ms | Allocations: 2067)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 219)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+  Rendered shared/_application_footer.html.erb (Duration: 0.1ms | Allocations: 14)
+Completed 200 OK in 26ms (Views: 22.7ms | ActiveRecord: 0.1ms | Allocations: 13463)
+
+
+Started GET "/" for ::1 at 2020-07-23 20:06:55 +0530
+Processing by UsersController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering users/index.html.erb within layouts/application
+  Rendered users/index.html.erb within layouts/application (Duration: 0.8ms | Allocations: 131)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 214)
+  Rendered shared/_alerts.html.erb (Duration: 0.2ms | Allocations: 25)
+  Rendered shared/_application_footer.html.erb (Duration: 0.1ms | Allocations: 14)
+Completed 200 OK in 30ms (Views: 26.1ms | ActiveRecord: 0.2ms | Allocations: 10794)
+
+
+Started GET "/expenses" for ::1 at 2020-07-23 20:18:18 +0530
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (1.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by ExpensesController#index as HTML
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (1.6ms)[0m  [1m[34mSELECT "expenses"."amount" FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/models/expense.rb:8:in `block in <class:Expense>'
+  Rendering expenses/index.html.erb within layouts/group
+  Rendered shared/_total_expenses.html.erb (Duration: 7.6ms | Allocations: 6778)
+  [1m[36mExpense Load (0.4ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 13.8ms | Allocations: 4839)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/expenses/index.html.erb:11
+  Rendered shared/_new_expenses.html.erb (Duration: 2.0ms | Allocations: 137)
+  Rendered expenses/index.html.erb within layouts/group (Duration: 36.9ms | Allocations: 15920)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 3.3ms | Allocations: 360)
+  Rendered shared/_alerts.html.erb (Duration: 1.8ms | Allocations: 129)
+Completed 200 OK in 325ms (Views: 276.9ms | ActiveRecord: 5.4ms | Allocations: 51434)
+
+
+Started GET "/" for ::1 at 2020-07-23 20:18:20 +0530
+Processing by UsersController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering users/index.html.erb within layouts/application
+  Rendered users/index.html.erb within layouts/application (Duration: 2.6ms | Allocations: 326)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 221)
+  Rendered shared/_alerts.html.erb (Duration: 0.2ms | Allocations: 25)
+  Rendered shared/_application_footer.html.erb (Duration: 1.7ms | Allocations: 105)
+Completed 200 OK in 33ms (Views: 29.4ms | ActiveRecord: 0.2ms | Allocations: 12875)
+
+
+Started GET "/" for ::1 at 2020-07-23 20:18:20 +0530
+Processing by UsersController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering users/index.html.erb within layouts/application
+  Rendered users/index.html.erb within layouts/application (Duration: 0.4ms | Allocations: 131)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 214)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+  Rendered shared/_application_footer.html.erb (Duration: 0.1ms | Allocations: 13)
+Completed 200 OK in 17ms (Views: 14.6ms | ActiveRecord: 0.2ms | Allocations: 10791)
+
+
+Started GET "/expenses" for ::1 at 2020-07-23 20:18:21 +0530
+Processing by ExpensesController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "expenses"."amount" FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/models/expense.rb:8:in `block in <class:Expense>'
+  Rendering expenses/index.html.erb within layouts/group
+  Rendered shared/_total_expenses.html.erb (Duration: 0.4ms | Allocations: 102)
+  [1m[36mExpense Load (0.3ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 2.4ms | Allocations: 991)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/expenses/index.html.erb:11
+  Rendered shared/_new_expenses.html.erb (Duration: 0.1ms | Allocations: 35)
+  Rendered expenses/index.html.erb within layouts/group (Duration: 6.3ms | Allocations: 2129)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.3ms | Allocations: 215)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+Completed 200 OK in 25ms (Views: 18.9ms | ActiveRecord: 0.9ms | Allocations: 13582)
+
+
+Started GET "/expenses" for ::1 at 2020-07-23 20:18:21 +0530
+Processing by ExpensesController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT "expenses"."amount" FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/models/expense.rb:8:in `block in <class:Expense>'
+  Rendering expenses/index.html.erb within layouts/group
+  Rendered shared/_total_expenses.html.erb (Duration: 0.3ms | Allocations: 102)
+  [1m[36mExpense Load (0.3ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 2.3ms | Allocations: 983)
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/expenses/index.html.erb:11
+  Rendered shared/_new_expenses.html.erb (Duration: 0.4ms | Allocations: 34)
+  Rendered expenses/index.html.erb within layouts/group (Duration: 7.1ms | Allocations: 2118)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.5ms | Allocations: 204)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 23)
+Completed 200 OK in 38ms (Views: 32.2ms | ActiveRecord: 1.0ms | Allocations: 13544)
+
+
+Started GET "/extExpenses" for ::1 at 2020-07-23 20:18:22 +0530
+Processing by ExpensesController#external_expense as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "expenses"."id" FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/controllers/expenses_controller.rb:85:in `ids'
+  [1m[35m (1.2ms)[0m  [1m[34mSELECT "group_expenses"."Expense_id" FROM "group_expenses" WHERE "group_expenses"."Expense_id" = ?[0m  [["Expense_id", 1]]
+  ↳ app/models/expense.rb:11:in `block in <class:Expense>'
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "expenses"."amount" FROM "expenses" WHERE 1=1 AND "expenses"."User_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["User_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/models/expense.rb:8:in `block in <class:Expense>'
+  Rendering expenses/external_expense.html.erb within layouts/group
+  Rendered shared/_total_expenses.html.erb (Duration: 0.3ms | Allocations: 102)
+  [1m[36mExpense Load (0.3ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE 1=1 AND "expenses"."User_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["User_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 2.5ms | Allocations: 983)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "expenses" WHERE 1=1 AND "expenses"."User_id" = ?[0m  [["User_id", 1]]
+  ↳ app/views/expenses/external_expense.html.erb:10
+  Rendered shared/_new_expenses.html.erb (Duration: 0.1ms | Allocations: 35)
+  Rendered expenses/external_expense.html.erb within layouts/group (Duration: 7.3ms | Allocations: 2283)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.6ms | Allocations: 215)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+Completed 200 OK in 49ms (Views: 20.8ms | ActiveRecord: 2.9ms | Allocations: 16207)
+
+
+Started GET "/groups" for ::1 at 2020-07-23 20:18:22 +0530
+Processing by GroupsController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering groups/index.html.erb within layouts/group
+  [1m[36mGroup Load (1.7ms)[0m  [1m[34mSELECT "groups".* FROM "groups" WHERE "groups"."user_id" = ? ORDER BY name asc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/groups/index.html.erb:7
+  Rendered collection of groups/_group.html.erb [1 times] (Duration: 3.5ms | Allocations: 471)
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "groups" WHERE "groups"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/groups/index.html.erb:10
+  Rendered groups/index.html.erb within layouts/group (Duration: 20.4ms | Allocations: 7332)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.3ms | Allocations: 216)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+Completed 200 OK in 44ms (Views: 32.4ms | ActiveRecord: 3.0ms | Allocations: 22024)
+
+
+Started GET "/extExpenses" for ::1 at 2020-07-23 20:18:23 +0530
+Processing by ExpensesController#external_expense as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "expenses"."id" FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/controllers/expenses_controller.rb:85:in `ids'
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "group_expenses"."Expense_id" FROM "group_expenses" WHERE "group_expenses"."Expense_id" = ?[0m  [["Expense_id", 1]]
+  ↳ app/models/expense.rb:11:in `block in <class:Expense>'
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "expenses"."amount" FROM "expenses" WHERE 1=1 AND "expenses"."User_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["User_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/models/expense.rb:8:in `block in <class:Expense>'
+  Rendering expenses/external_expense.html.erb within layouts/group
+  Rendered shared/_total_expenses.html.erb (Duration: 0.3ms | Allocations: 102)
+  [1m[36mExpense Load (0.3ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE 1=1 AND "expenses"."User_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["User_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 3.5ms | Allocations: 982)
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "expenses" WHERE 1=1 AND "expenses"."User_id" = ?[0m  [["User_id", 1]]
+  ↳ app/views/expenses/external_expense.html.erb:10
+  Rendered shared/_new_expenses.html.erb (Duration: 0.1ms | Allocations: 35)
+  Rendered expenses/external_expense.html.erb within layouts/group (Duration: 7.3ms | Allocations: 2118)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 215)
+  Rendered shared/_alerts.html.erb (Duration: 0.2ms | Allocations: 25)
+Completed 200 OK in 41ms (Views: 28.6ms | ActiveRecord: 1.6ms | Allocations: 14847)
+
+
+Started GET "/expenses" for ::1 at 2020-07-23 20:18:23 +0530
+Processing by ExpensesController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT "expenses"."amount" FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/models/expense.rb:8:in `block in <class:Expense>'
+  Rendering expenses/index.html.erb within layouts/group
+  Rendered shared/_total_expenses.html.erb (Duration: 0.4ms | Allocations: 102)
+  [1m[36mExpense Load (0.3ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 2.5ms | Allocations: 983)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/expenses/index.html.erb:11
+  Rendered shared/_new_expenses.html.erb (Duration: 0.1ms | Allocations: 34)
+  Rendered expenses/index.html.erb within layouts/group (Duration: 6.4ms | Allocations: 2118)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.8ms | Allocations: 204)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 23)
+Completed 200 OK in 39ms (Views: 22.4ms | ActiveRecord: 1.2ms | Allocations: 13595)
+
+
+Started GET "/" for ::1 at 2020-07-23 20:18:24 +0530
+Processing by UsersController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering users/index.html.erb within layouts/application
+  Rendered users/index.html.erb within layouts/application (Duration: 0.4ms | Allocations: 131)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.3ms | Allocations: 214)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+  Rendered shared/_application_footer.html.erb (Duration: 0.1ms | Allocations: 14)
+Completed 200 OK in 18ms (Views: 14.1ms | ActiveRecord: 0.2ms | Allocations: 10874)
+
+
+Started GET "/" for ::1 at 2020-07-23 20:18:24 +0530
+Processing by UsersController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering users/index.html.erb within layouts/application
+  Rendered users/index.html.erb within layouts/application (Duration: 0.6ms | Allocations: 122)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 206)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 23)
+  Rendered shared/_application_footer.html.erb (Duration: 0.1ms | Allocations: 14)
+Completed 200 OK in 22ms (Views: 18.1ms | ActiveRecord: 0.2ms | Allocations: 10762)
+
+
+Started GET "/expenses" for ::1 at 2020-07-23 20:18:26 +0530
+Processing by ExpensesController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "expenses"."amount" FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/models/expense.rb:8:in `block in <class:Expense>'
+  Rendering expenses/index.html.erb within layouts/group
+  Rendered shared/_total_expenses.html.erb (Duration: 0.3ms | Allocations: 102)
+  [1m[36mExpense Load (0.4ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 2.7ms | Allocations: 983)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/expenses/index.html.erb:11
+  Rendered shared/_new_expenses.html.erb (Duration: 0.1ms | Allocations: 34)
+  Rendered expenses/index.html.erb within layouts/group (Duration: 6.3ms | Allocations: 2119)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 204)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 23)
+Completed 200 OK in 24ms (Views: 18.7ms | ActiveRecord: 1.1ms | Allocations: 13529)
+
+
+Started GET "/expenses" for ::1 at 2020-07-23 20:18:26 +0530
+Processing by ExpensesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "expenses"."amount" FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/models/expense.rb:8:in `block in <class:Expense>'
+  Rendering expenses/index.html.erb within layouts/group
+  Rendered shared/_total_expenses.html.erb (Duration: 0.2ms | Allocations: 102)
+  [1m[36mExpense Load (0.3ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 2.9ms | Allocations: 983)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/expenses/index.html.erb:11
+  Rendered shared/_new_expenses.html.erb (Duration: 0.1ms | Allocations: 34)
+  Rendered expenses/index.html.erb within layouts/group (Duration: 5.9ms | Allocations: 2118)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.3ms | Allocations: 204)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 23)
+Completed 200 OK in 28ms (Views: 21.8ms | ActiveRecord: 0.9ms | Allocations: 13531)
+
+
+Started GET "/extExpenses" for ::1 at 2020-07-23 20:18:27 +0530
+Processing by ExpensesController#external_expense as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "expenses"."id" FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/controllers/expenses_controller.rb:85:in `ids'
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "group_expenses"."Expense_id" FROM "group_expenses" WHERE "group_expenses"."Expense_id" = ?[0m  [["Expense_id", 1]]
+  ↳ app/models/expense.rb:11:in `block in <class:Expense>'
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "expenses"."amount" FROM "expenses" WHERE 1=1 AND "expenses"."User_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["User_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/models/expense.rb:8:in `block in <class:Expense>'
+  Rendering expenses/external_expense.html.erb within layouts/group
+  Rendered shared/_total_expenses.html.erb (Duration: 0.3ms | Allocations: 102)
+  [1m[36mExpense Load (0.3ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE 1=1 AND "expenses"."User_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["User_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 2.5ms | Allocations: 974)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "expenses" WHERE 1=1 AND "expenses"."User_id" = ?[0m  [["User_id", 1]]
+  ↳ app/views/expenses/external_expense.html.erb:10
+  Rendered shared/_new_expenses.html.erb (Duration: 0.1ms | Allocations: 34)
+  Rendered expenses/external_expense.html.erb within layouts/group (Duration: 5.5ms | Allocations: 2109)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.3ms | Allocations: 204)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 23)
+Completed 200 OK in 27ms (Views: 18.0ms | ActiveRecord: 1.1ms | Allocations: 14822)
+
+
+Started GET "/groups" for ::1 at 2020-07-23 20:18:27 +0530
+Processing by GroupsController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering groups/index.html.erb within layouts/group
+  [1m[36mGroup Load (0.3ms)[0m  [1m[34mSELECT "groups".* FROM "groups" WHERE "groups"."user_id" = ? ORDER BY name asc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/groups/index.html.erb:7
+  Rendered collection of groups/_group.html.erb [1 times] (Duration: 0.6ms | Allocations: 246)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "groups" WHERE "groups"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/groups/index.html.erb:10
+  Rendered groups/index.html.erb within layouts/group (Duration: 4.7ms | Allocations: 1921)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 205)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 23)
+Completed 200 OK in 22ms (Views: 17.6ms | ActiveRecord: 0.7ms | Allocations: 12772)
+
+
+Started GET "/edit.1" for ::1 at 2020-07-23 20:18:28 +0530
+Processing by Devise::RegistrationsController#edit as 
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering devise/registrations/edit.html.erb within layouts/application
+  Rendered devise/shared/_error_messages.html.erb (Duration: 2.0ms | Allocations: 201)
+  Rendered devise/registrations/edit.html.erb within layouts/application (Duration: 10.2ms | Allocations: 3126)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.5ms | Allocations: 219)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+  Rendered shared/_application_footer.html.erb (Duration: 0.1ms | Allocations: 15)
+Completed 200 OK in 45ms (Views: 40.3ms | ActiveRecord: 0.2ms | Allocations: 15822)
+
+
+Started GET "/" for ::1 at 2020-07-23 21:46:01 +0530
+  [1m[35m (2.7ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (1.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UsersController#index as HTML
+Completed 401 Unauthorized in 15ms (ActiveRecord: 0.0ms | Allocations: 7372)
+
+
+Started GET "/login" for ::1 at 2020-07-23 21:46:01 +0530
+Processing by Devise::SessionsController#new as HTML
+  Rendering devise/sessions/new.html.erb within layouts/application
+  Rendered devise/shared/_links.html.erb (Duration: 3.7ms | Allocations: 597)
+  Rendered devise/sessions/new.html.erb within layouts/application (Duration: 24.6ms | Allocations: 2848)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 5.3ms | Allocations: 463)
+  Rendered shared/_alerts.html.erb (Duration: 1.8ms | Allocations: 128)
+  Rendered shared/_application_footer.html.erb (Duration: 1.6ms | Allocations: 105)
+Completed 200 OK in 319ms (Views: 291.9ms | ActiveRecord: 1.0ms | Allocations: 31338)
+
+
+Started POST "/login" for ::1 at 2020-07-23 21:46:09 +0530
+Processing by Devise::SessionsController#create as HTML
+  Parameters: {"authenticity_token"=>"OD89tSS0GEjyF6nr4mTauE44LpF0O/5U18HqvKtLwvIGds6hTsv+oJB3DsVraWABL8SJJbRWTUqPDyIUAglVFg==", "user"=>{"username"=>"raj", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Log in"}
+  [1m[36mUser Load (1.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["username", "raj"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 18ms (ActiveRecord: 1.6ms | Allocations: 2474)
+
+
+Processing by Devise::SessionsController#new as HTML
+  Parameters: {"authenticity_token"=>"OD89tSS0GEjyF6nr4mTauE44LpF0O/5U18HqvKtLwvIGds6hTsv+oJB3DsVraWABL8SJJbRWTUqPDyIUAglVFg==", "user"=>{"username"=>"raj", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Log in"}
+  Rendering devise/sessions/new.html.erb within layouts/application
+  Rendered devise/shared/_links.html.erb (Duration: 0.4ms | Allocations: 131)
+  Rendered devise/sessions/new.html.erb within layouts/application (Duration: 5.4ms | Allocations: 1051)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.6ms | Allocations: 244)
+  Rendered shared/_alerts.html.erb (Duration: 0.3ms | Allocations: 16)
+  Rendered shared/_application_footer.html.erb (Duration: 0.2ms | Allocations: 13)
+Completed 200 OK in 403ms (Views: 49.5ms | ActiveRecord: 0.0ms | Allocations: 11080)
+
+
