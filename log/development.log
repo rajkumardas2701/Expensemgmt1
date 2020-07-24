@@ -1073,3 +1073,308 @@ Processing by Devise::SessionsController#new as HTML
 Completed 200 OK in 403ms (Views: 49.5ms | ActiveRecord: 0.0ms | Allocations: 11080)
 
 
+Started GET "/" for ::1 at 2020-07-23 22:17:05 +0530
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UsersController#index as HTML
+Completed 401 Unauthorized in 12ms (ActiveRecord: 0.0ms | Allocations: 1165)
+
+
+Started GET "/login" for ::1 at 2020-07-23 22:17:05 +0530
+Processing by Devise::SessionsController#new as HTML
+  Rendering devise/sessions/new.html.erb within layouts/application
+  Rendered devise/shared/_links.html.erb (Duration: 2.0ms | Allocations: 597)
+  Rendered devise/sessions/new.html.erb within layouts/application (Duration: 9.3ms | Allocations: 2843)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 1.7ms | Allocations: 463)
+  Rendered shared/_alerts.html.erb (Duration: 1.4ms | Allocations: 128)
+  Rendered shared/_application_footer.html.erb (Duration: 1.1ms | Allocations: 105)
+Completed 200 OK in 130ms (Views: 109.4ms | ActiveRecord: 1.0ms | Allocations: 31364)
+
+
+  [1m[35m (2.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (1.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateStructure (20200723223434)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (1.9ms)[0m  [1m[35mDROP TABLE IF EXISTS "expenses"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "expenses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" text, "amount" float, "createdAt" date, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "User_id" integer NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_expenses_on_User_id" ON "expenses" ("User_id")[0m
+  [1m[35m (1.8ms)[0m  [1m[35mDROP TABLE IF EXISTS "group_expenses"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "group_expenses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "Group_id" integer NOT NULL, "Expense_id" integer NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_group_expenses_on_Expense_id" ON "group_expenses" ("Expense_id")[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE  INDEX "index_group_expenses_on_Group_id" ON "group_expenses" ("Group_id")[0m
+  [1m[35m (2.4ms)[0m  [1m[35mDROP TABLE IF EXISTS "groups"[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "groups" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "icon" text, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "user_id" integer)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE  INDEX "index_groups_on_user_id" ON "groups" ("user_id")[0m
+  [1m[35m (2.5ms)[0m  [1m[35mDROP TABLE IF EXISTS "users"[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar DEFAULT '' NOT NULL, "userimage" text, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "email" varchar DEFAULT '' NOT NULL, "encrypted_password" varchar DEFAULT '' NOT NULL, "reset_password_token" varchar, "reset_password_sent_at" datetime, "remember_created_at" datetime)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_reset_password_token" ON "users" ("reset_password_token")[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_username" ON "users" ("username")[0m
+  [1m[35m (0.3ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aexpenses" ("id" integer NOT NULL PRIMARY KEY, "name" text DEFAULT NULL, "amount" float DEFAULT NULL, "createdAt" date DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "User_id" integer NOT NULL)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE  INDEX "tindex_aexpenses_on_User_id" ON "aexpenses" ("User_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[32mINSERT INTO "aexpenses" ("id","name","amount","createdAt","created_at","updated_at","User_id")
+                     SELECT "id","name","amount","createdAt","created_at","updated_at","User_id" FROM "expenses"[0m
+  [1m[35m (0.8ms)[0m  [1m[35mDROP TABLE "expenses"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "expenses" ("id" integer NOT NULL PRIMARY KEY, "name" text DEFAULT NULL, "amount" float DEFAULT NULL, "createdAt" date DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "User_id" integer NOT NULL, CONSTRAINT "fk_rails_e1b182568b"
+FOREIGN KEY ("User_id")
+  REFERENCES "Users" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_expenses_on_User_id" ON "expenses" ("User_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "expenses" ("id","name","amount","createdAt","created_at","updated_at","User_id")
+                     SELECT "id","name","amount","createdAt","created_at","updated_at","User_id" FROM "aexpenses"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aexpenses"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "agroup_expenses" ("id" integer NOT NULL PRIMARY KEY, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "Group_id" integer NOT NULL, "Expense_id" integer NOT NULL)[0m
+  [1m[35m (2.8ms)[0m  [1m[35mCREATE  INDEX "tindex_agroup_expenses_on_Group_id" ON "agroup_expenses" ("Group_id")[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE  INDEX "tindex_agroup_expenses_on_Expense_id" ON "agroup_expenses" ("Expense_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "agroup_expenses" ("id","created_at","updated_at","Group_id","Expense_id")
+                     SELECT "id","created_at","updated_at","Group_id","Expense_id" FROM "group_expenses"[0m
+  [1m[35m (0.3ms)[0m  [1m[35mDROP TABLE "group_expenses"[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "group_expenses" ("id" integer NOT NULL PRIMARY KEY, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "Group_id" integer NOT NULL, "Expense_id" integer NOT NULL, CONSTRAINT "fk_rails_1621aa4994"
+FOREIGN KEY ("Expense_id")
+  REFERENCES "Expenses" ("id")
+)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE  INDEX "index_group_expenses_on_Expense_id" ON "group_expenses" ("Expense_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_group_expenses_on_Group_id" ON "group_expenses" ("Group_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "group_expenses" ("id","created_at","updated_at","Group_id","Expense_id")
+                     SELECT "id","created_at","updated_at","Group_id","Expense_id" FROM "agroup_expenses"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "agroup_expenses"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.4ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TEMPORARY TABLE "agroup_expenses" ("id" integer NOT NULL PRIMARY KEY, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "Group_id" integer NOT NULL, "Expense_id" integer NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "tindex_agroup_expenses_on_Group_id" ON "agroup_expenses" ("Group_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "tindex_agroup_expenses_on_Expense_id" ON "agroup_expenses" ("Expense_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "agroup_expenses" ("id","created_at","updated_at","Group_id","Expense_id")
+                     SELECT "id","created_at","updated_at","Group_id","Expense_id" FROM "group_expenses"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "group_expenses"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "group_expenses" ("id" integer NOT NULL PRIMARY KEY, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "Group_id" integer NOT NULL, "Expense_id" integer NOT NULL, CONSTRAINT "fk_rails_1621aa4994"
+FOREIGN KEY ("Expense_id")
+  REFERENCES "Expenses" ("id")
+, CONSTRAINT "fk_rails_6c3bd9f65f"
+FOREIGN KEY ("Group_id")
+  REFERENCES "Groups" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_group_expenses_on_Expense_id" ON "group_expenses" ("Expense_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_group_expenses_on_Group_id" ON "group_expenses" ("Group_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[32mINSERT INTO "group_expenses" ("id","created_at","updated_at","Group_id","Expense_id")
+                     SELECT "id","created_at","updated_at","Group_id","Expense_id" FROM "agroup_expenses"[0m
+  [1m[35m (0.3ms)[0m  [1m[35mDROP TABLE "agroup_expenses"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "agroups" ("id" integer NOT NULL PRIMARY KEY, "name" varchar DEFAULT NULL, "icon" text DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "user_id" integer DEFAULT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "tindex_agroups_on_user_id" ON "agroups" ("user_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "agroups" ("id","name","icon","created_at","updated_at","user_id")
+                     SELECT "id","name","icon","created_at","updated_at","user_id" FROM "groups"[0m
+  [1m[35m (0.4ms)[0m  [1m[35mDROP TABLE "groups"[0m
+  [1m[35m (5.2ms)[0m  [1m[35mCREATE TABLE "groups" ("id" integer NOT NULL PRIMARY KEY, "name" varchar DEFAULT NULL, "icon" text DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "user_id" integer DEFAULT NULL, CONSTRAINT "fk_rails_5e78cd340a"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE  INDEX "index_groups_on_user_id" ON "groups" ("user_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "groups" ("id","name","icon","created_at","updated_at","user_id")
+                     SELECT "id","name","icon","created_at","updated_at","user_id" FROM "agroups"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "agroups"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mprimary::SchemaMigration Create (1.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20200723223434"]]
+  [1m[35m (12.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.7ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/" for ::1 at 2020-07-23 22:39:59 +0530
+  [1m[35m (3.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (1.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UsersController#index as HTML
+Completed 401 Unauthorized in 17ms (ActiveRecord: 0.0ms | Allocations: 1167)
+
+
+Started GET "/" for ::1 at 2020-07-23 22:39:59 +0530
+Processing by UsersController#index as HTML
+Completed 401 Unauthorized in 1ms (ActiveRecord: 0.0ms | Allocations: 279)
+
+
+Started GET "/login" for ::1 at 2020-07-23 22:39:59 +0530
+Processing by Devise::SessionsController#new as HTML
+  Rendering devise/sessions/new.html.erb within layouts/application
+  Rendered devise/shared/_links.html.erb (Duration: 2.7ms | Allocations: 601)
+  Rendered devise/sessions/new.html.erb within layouts/application (Duration: 24.5ms | Allocations: 2847)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 17.1ms | Allocations: 463)
+  Rendered shared/_alerts.html.erb (Duration: 1.8ms | Allocations: 128)
+  Rendered shared/_application_footer.html.erb (Duration: 2.8ms | Allocations: 105)
+Completed 200 OK in 370ms (Views: 351.8ms | ActiveRecord: 1.1ms | Allocations: 31367)
+
+
+Started GET "/register" for ::1 at 2020-07-23 22:40:13 +0530
+Processing by Devise::RegistrationsController#new as HTML
+  Rendering devise/registrations/new.html.erb within layouts/application
+  Rendered devise/shared/_error_messages.html.erb (Duration: 1.9ms | Allocations: 199)
+  Rendered devise/shared/_links.html.erb (Duration: 0.4ms | Allocations: 120)
+  Rendered devise/registrations/new.html.erb within layouts/application (Duration: 14.2ms | Allocations: 2322)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.7ms | Allocations: 320)
+  Rendered shared/_alerts.html.erb (Duration: 0.2ms | Allocations: 25)
+  Rendered shared/_application_footer.html.erb (Duration: 0.1ms | Allocations: 14)
+Completed 200 OK in 52ms (Views: 50.7ms | ActiveRecord: 0.0ms | Allocations: 12739)
+
+
+Started POST "/" for ::1 at 2020-07-23 22:40:25 +0530
+Processing by Devise::RegistrationsController#create as HTML
+  Parameters: {"authenticity_token"=>"eQp0Sw7zvnO0DOdKfPVXkicKU9OGrPk5AX90Is0qFcr8ggy2aZvijTaBIZk5h1+I+pcycw0+YRzWmH38hqa+dQ==", "user"=>{"username"=>"raj", "email"=>"raj@ex.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}, "commit"=>"Sign up"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (1.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "raj@ex.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (1.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = ? LIMIT ?[0m  [["username", "raj"], ["LIMIT", 1]]
+  [1m[36mUser Create (2.5ms)[0m  [1m[32mINSERT INTO "users" ("username", "created_at", "updated_at", "email", "encrypted_password") VALUES (?, ?, ?, ?, ?)[0m  [["username", "raj"], ["created_at", "2020-07-23 17:10:26.097588"], ["updated_at", "2020-07-23 17:10:26.097588"], ["email", "raj@ex.com"], ["encrypted_password", "$2a$12$ZCI0QJcOnXJJrolIFWEb8.dEPbCcAiHLUqy38Zms1.pbbjEHZ3Y6."]]
+  [1m[35m (4.2ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/
+Completed 302 Found in 366ms (ActiveRecord: 9.6ms | Allocations: 12763)
+
+
+Started GET "/" for ::1 at 2020-07-23 22:40:26 +0530
+Processing by UsersController#index as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering users/index.html.erb within layouts/application
+  Rendered users/index.html.erb within layouts/application (Duration: 3.0ms | Allocations: 317)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.6ms | Allocations: 217)
+  Rendered shared/_alerts.html.erb (Duration: 0.2ms | Allocations: 27)
+  Rendered shared/_application_footer.html.erb (Duration: 0.0ms | Allocations: 14)
+Completed 200 OK in 33ms (Views: 25.1ms | ActiveRecord: 0.5ms | Allocations: 11865)
+
+
+Started GET "/expenses" for ::1 at 2020-07-23 22:40:27 +0530
+Processing by ExpensesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (1.4ms)[0m  [1m[34mSELECT "expenses"."amount" FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/models/expense.rb:8:in `block in <class:Expense>'
+  Rendering expenses/index.html.erb within layouts/group
+  Rendered shared/_total_expenses.html.erb (Duration: 13.9ms | Allocations: 941)
+  [1m[36mExpense Load (0.4ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 5.5ms | Allocations: 917)
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/expenses/index.html.erb:11
+  Rendered shared/_new_expenses.html.erb (Duration: 1.8ms | Allocations: 148)
+  Rendered expenses/index.html.erb within layouts/group (Duration: 38.0ms | Allocations: 4033)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.6ms | Allocations: 219)
+  Rendered shared/_alerts.html.erb (Duration: 0.4ms | Allocations: 25)
+Completed 200 OK in 120ms (Views: 85.8ms | ActiveRecord: 2.7ms | Allocations: 21373)
+
+
+Started GET "/expenses" for ::1 at 2020-07-23 22:40:28 +0530
+Processing by ExpensesController#index as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "expenses"."amount" FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/models/expense.rb:8:in `block in <class:Expense>'
+  Rendering expenses/index.html.erb within layouts/group
+  Rendered shared/_total_expenses.html.erb (Duration: 0.4ms | Allocations: 105)
+  [1m[36mExpense Load (0.3ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE "expenses"."user_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 3.6ms | Allocations: 691)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/expenses/index.html.erb:11
+  Rendered shared/_new_expenses.html.erb (Duration: 0.3ms | Allocations: 45)
+  Rendered expenses/index.html.erb within layouts/group (Duration: 15.0ms | Allocations: 1842)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.9ms | Allocations: 204)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 23)
+Completed 200 OK in 62ms (Views: 53.7ms | ActiveRecord: 1.3ms | Allocations: 13370)
+
+
+Started GET "/extExpenses" for ::1 at 2020-07-23 22:40:28 +0530
+Processing by ExpensesController#external_expense as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "expenses"."id" FROM "expenses" WHERE "expenses"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/controllers/expenses_controller.rb:85:in `ids'
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "group_expenses"."Expense_id" FROM "group_expenses" WHERE 1=0[0m
+  ↳ app/models/expense.rb:11:in `block in <class:Expense>'
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "expenses"."amount" FROM "expenses" WHERE 1=1 AND "expenses"."User_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["User_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/models/expense.rb:8:in `block in <class:Expense>'
+  Rendering expenses/external_expense.html.erb within layouts/group
+  Rendered shared/_total_expenses.html.erb (Duration: 0.5ms | Allocations: 105)
+  [1m[36mExpense Load (0.3ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses" WHERE 1=1 AND "expenses"."User_id" = ? ORDER BY createdAt desc LIMIT ? OFFSET ?[0m  [["User_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/expenses/_expense.html.erb:1
+  Rendered expenses/_expense.html.erb (Duration: 1.8ms | Allocations: 679)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "expenses" WHERE 1=1 AND "expenses"."User_id" = ?[0m  [["User_id", 1]]
+  ↳ app/views/expenses/external_expense.html.erb:10
+  Rendered shared/_new_expenses.html.erb (Duration: 0.1ms | Allocations: 49)
+  Rendered expenses/external_expense.html.erb within layouts/group (Duration: 7.0ms | Allocations: 1994)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 215)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+Completed 200 OK in 36ms (Views: 21.3ms | ActiveRecord: 1.8ms | Allocations: 15698)
+
+
+Started GET "/groups" for ::1 at 2020-07-23 22:40:29 +0530
+Processing by GroupsController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering groups/index.html.erb within layouts/group
+  [1m[36mGroup Load (1.6ms)[0m  [1m[34mSELECT "groups".* FROM "groups" WHERE "groups"."user_id" = ? ORDER BY name asc LIMIT ? OFFSET ?[0m  [["user_id", 1], ["LIMIT", 3], ["OFFSET", 0]]
+  ↳ app/views/groups/index.html.erb:7
+  Rendered collection of templates [0 times] (Duration: 0.0ms | Allocations: 3)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "groups" WHERE "groups"."user_id" = ?[0m  [["user_id", 1]]
+  ↳ app/views/groups/index.html.erb:10
+  Rendered groups/index.html.erb within layouts/group (Duration: 9.8ms | Allocations: 1811)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.4ms | Allocations: 216)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 25)
+Completed 200 OK in 58ms (Views: 32.1ms | ActiveRecord: 2.5ms | Allocations: 16575)
+
+
+Started GET "/" for ::1 at 2020-07-23 22:40:30 +0530
+Processing by UsersController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering users/index.html.erb within layouts/application
+  Rendered users/index.html.erb within layouts/application (Duration: 1.0ms | Allocations: 131)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.9ms | Allocations: 214)
+  Rendered shared/_alerts.html.erb (Duration: 0.3ms | Allocations: 25)
+  Rendered shared/_application_footer.html.erb (Duration: 0.2ms | Allocations: 14)
+Completed 200 OK in 27ms (Views: 22.0ms | ActiveRecord: 0.2ms | Allocations: 10855)
+
+
+Started GET "/" for ::1 at 2020-07-23 22:40:30 +0530
+Processing by UsersController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering users/index.html.erb within layouts/application
+  Rendered users/index.html.erb within layouts/application (Duration: 1.7ms | Allocations: 122)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered shared/_application_nav.html.erb (Duration: 0.5ms | Allocations: 206)
+  Rendered shared/_alerts.html.erb (Duration: 0.1ms | Allocations: 23)
+  Rendered shared/_application_footer.html.erb (Duration: 0.2ms | Allocations: 13)
+Completed 200 OK in 34ms (Views: 28.4ms | ActiveRecord: 0.2ms | Allocations: 10766)
+
+
+  [1m[35m (2.6ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mGroup Load (0.2ms)[0m  [1m[34mSELECT "groups".* FROM "groups"[0m
+  [1m[36mGroup Load (0.6ms)[0m  [1m[34mSELECT "groups".* FROM "groups"[0m
+  [1m[36mExpense Load (0.7ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses"[0m
+  [1m[36mGroupExpense Load (0.5ms)[0m  [1m[34mSELECT "group_expenses".* FROM "group_expenses"[0m
+  [1m[36mGroup Load (0.3ms)[0m  [1m[34mSELECT "groups".* FROM "groups"[0m
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mExpense Create (3.4ms)[0m  [1m[32mINSERT INTO "expenses" ("name", "amount", "createdAt", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "Test"], ["amount", 10.0], ["createdAt", "2020-10-10"], ["created_at", "2020-07-24 07:26:41.029011"], ["updated_at", "2020-07-24 07:26:41.029011"]]
+  [1m[35m (0.3ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mExpense Create (2.2ms)[0m  [1m[32mINSERT INTO "expenses" ("name", "amount", "createdAt", "created_at", "updated_at", "User_id") VALUES (?, ?, ?, ?, ?, ?)[0m  [["name", "Test"], ["amount", 10.0], ["createdAt", "2020-10-10"], ["created_at", "2020-07-24 07:27:16.350112"], ["updated_at", "2020-07-24 07:27:16.350112"], ["User_id", 1]]
+  [1m[35m (2.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mExpense Load (0.2ms)[0m  [1m[34mSELECT "expenses".* FROM "expenses"[0m
